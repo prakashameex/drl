@@ -1,51 +1,71 @@
-<H4>item Number</H4>
-<mat-form-field>
+<div class="col-sm-4">
+  <h5 class="col-sm-11">item Number</h5>
+ <mat-form-field class="col-sm-11">
     <mat-select placeholder="Color" formControlName="color">
 
-    <mat-option *ngFor="let food of foods" [value]="food.value">
-      {{food.viewValue}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-<h4>item Description</h4>
+      <mat-option *ngFor="let food of foods" [value]="food.value">
+        {{food.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="col-sm-4">
+  <h5 class="col-sm-11">item Description</h5>
 
-<mat-form-field>
-  <mat-select>
+ <mat-form-field class="col-sm-11">
+    <mat-select>
 
-    <mat-option *ngFor="let food of foods" [value]="food.value">
-      {{food.viewValue}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-<h4>Assortment</h4>
+      <mat-option *ngFor="let food of foods" [value]="food.value">
+        {{food.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="col-sm-4">
+  <h5 class="col-sm-11">Assortment</h5>
 
-<mat-form-field>
-  <mat-select>
+ <mat-form-field class="col-sm-11">
+    <mat-select>
 
-    <mat-option *ngFor="let food of foods" [value]="food.value">
-      {{food.viewValue}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-<h4>Campaign</h4>
+      <mat-option *ngFor="let food of foods" [value]="food.value">
+        {{food.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="col-sm-4">
+  <h5 class="col-sm-11">Campaign</h5>
 
-<mat-form-field>
-  <mat-select>
+ <mat-form-field class="col-sm-11">
+    <mat-select>
 
-    <mat-option *ngFor="let food of foods" [value]="food.value">
-      {{food.viewValue}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-<h4>Campaign Begin Date</h4>
-<mat-form-field>
+      <mat-option *ngFor="let food of foods" [value]="food.value">
+        {{food.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="col-sm-4">
+  <div class="col-sm-6">
+      <h5>Campaign Begin Date</h5>
+ <mat-form-field>
     <input matInput [matDatepicker]="picker" placeholder="Choose a date">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
-  <h4>Campaign End Date</h4>
-<mat-form-field>
-    <input matInput [matDatepicker]="picker" placeholder="Choose a date">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
+</div>
+<div class="col-sm-6">
+  <h5>Campaign End Date</h5>
+ <mat-form-field >
+    <input matInput [matDatepicker]="pickerto" placeholder="Choose a date">
+    <mat-datepicker-toggle matSuffix [for]="pickerto"></mat-datepicker-toggle>
+    <mat-datepicker #pickerto></mat-datepicker>
   </mat-form-field>
+</div>
+
+</div>
+<div class="col-sm-12">
+    <button mat-raised-button color="primary"><i class="material-icons">
+        search
+        </i>Search</button>
+</div>
