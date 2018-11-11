@@ -4,7 +4,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { SearchComponent } from './search/search.component';
 import { AllocationComponent } from './allocation/allocation.component';
-import {MatButtonModule, MatCheckboxModule,MatSelectModule,MatNativeDateModule,MatFormFieldModule,MatDatepickerModule, MatInputModule} from '@angular/material';
+import { FormsModule } from '@angular/forms';
+import {MatSortModule,MatTableModule,MatButtonModule, MatCheckboxModule,MatSelectModule,MatNativeDateModule,MatFormFieldModule,MatDatepickerModule, MatInputModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,7 @@ import {MatButtonModule, MatCheckboxModule,MatSelectModule,MatNativeDateModule,M
     AllocationComponent
   ],
   imports: [
-    BrowserModule,BrowserAnimationsModule,MatButtonModule, MatCheckboxModule,MatDatepickerModule,MatSelectModule,MatNativeDateModule,MatFormFieldModule,MatInputModule
+    BrowserModule,BrowserAnimationsModule,MatTableModule,MatSortModule,MatButtonModule, MatCheckboxModule,MatDatepickerModule,MatSelectModule,MatNativeDateModule,MatFormFieldModule,MatInputModule,FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
