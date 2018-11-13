@@ -4,3 +4,12 @@
 app-search mat-form-field{
 width: 100%;
 }
+tr.mat-header-row,.mat-raised-button.search{
+    background: rgb(31, 127, 168);
+}
+tr.mat-header-row .mat-sort-header-button{
+    color: #fff;
+}
+.mattable{
+    margin-top: 30px;
+}
