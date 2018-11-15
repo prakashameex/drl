@@ -4,11 +4,10 @@
   <div class="col-sm-4">
     <h5 class="col-sm-11">item Number</h5>
     <mat-form-field class="col-sm-11">
-      <mat-select [ngModel]="globalFilter" (ngModelChange)="applyFilter($event)" placeholder="ItemNumber" name="itemno"
-       >
+      <mat-select  placeholder="ItemNumber" [formControl]="itemno">
 
-        <mat-option *ngFor="let food of foods" [value]="food.value">
-          {{food.viewValue}}
+        <mat-option *ngFor="let itemnumber of itemnumber" [value]="itemnumber.value">
+          {{itemnumber.viewValue}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -17,7 +16,7 @@
     <h5 class="col-sm-11">item Description</h5>
 
     <mat-form-field class="col-sm-11">
-      <mat-select placeholder="ItemDescription" [ngModel]="globalFilter" (ngModelChange)="applyFilter($event)" name="itemdes">
+      <mat-select placeholder="ItemDescription"  [formControl]="itemdesc">
 
         <mat-option *ngFor="let food of foods" [value]="food.value">
           {{food.viewValue}}
@@ -29,10 +28,10 @@
     <h5 class="col-sm-11">Assortment</h5>
 
     <mat-form-field class="col-sm-11">
-      <mat-select [ngModel]="globalFilter" placeholder="Assortment" (ngModelChange)="applyFilter($event)" name="itemassort">
+      <mat-select  placeholder="Assortment" [formControl]="Assortment">
 
-        <mat-option *ngFor="let food of foods" [value]="food.value">
-          {{food.viewValue}}
+        <mat-option *ngFor="let assortment of assortment" [value]="assortment.value">
+          {{assortment.viewValue}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -41,10 +40,10 @@
     <h5 class="col-sm-11">Campaign</h5>
 
     <mat-form-field class="col-sm-11">
-      <mat-select [ngModel]="globalFilter" placeholder="Campaign" (ngModelChange)="applyFilter($event)" name="Campaign">
+      <mat-select  placeholder="Campaign" [formControl]="Campaign">
 
-        <mat-option *ngFor="let food of foods" [value]="food.value">
-          {{food.viewValue}}
+        <mat-option *ngFor="let campaign of campaign" [value]="campaign.value">
+          {{campaign.viewValue}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -53,7 +52,7 @@
     <div class="col-sm-6">
       <h5>Campaign Begin Date</h5>
       <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Choose Begin date" name="begin"  [ngModel]="globalFilter"  (ngModelChange)="datefilter($event)">
+        <input matInput [matDatepicker]="picker" placeholder="Choose Begin date" [formControl]="begin">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
@@ -61,7 +60,7 @@
     <div class="col-sm-6">
       <h5>Campaign End Date</h5>
       <mat-form-field> 
-        <input matInput [matDatepicker]="pickerto" placeholder="Choose End date" name="end" [ngModel]="globalFilter" (ngModelChange)="datefilter($event)">
+        <input matInput [matDatepicker]="pickerto" placeholder="Choose End date" [formControl]="end">
         <mat-datepicker-toggle matSuffix [for]="pickerto"></mat-datepicker-toggle>
         <mat-datepicker #pickerto></mat-datepicker>
       </mat-form-field>
@@ -85,10 +84,10 @@
       <td mat-cell *matCellDef="let element"> {{element.position}} </td>
     </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="description">
+    <!-- Description Column -->
+    <ng-container matColumnDef="itemdes">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Description </th>
-      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.itemdes}} </td>
     </ng-container>
 
     <!-- Weight Column -->
