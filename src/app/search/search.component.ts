@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import {MatTableDataSource,MatSort} from '@angular/material';
+import { FormControl } from '@angular/forms';
 export interface PeriodicElement {
   description: string;
   Assortment:string;
@@ -39,6 +39,17 @@ export class SearchComponent implements OnInit {
   ];
   displayedColumns = ['position', 'description','Assortment','Campaign', 'begindate','enddate'];
     dataSource = new MatTableDataSource(ELEMENT_DATA);
+    itemno = new FormControl('');
+    itemdes=new FormControl();
+    Assortment=new FormControl();
+    Campaign=new FormControl();
+    begin=new FormControl();
+    end=new FormControl();    
+  globalFilter = '';
+    filteredValues = {
+      itemno: '', itemdes: '', Assortment: '',Campaign: '',begin:'',  end: ''
+    };
+
     @ViewChild(MatSort) sort: MatSort;
     applyFilter(filterValue:string) {   
       console.log('filer obj',filterValue)         
@@ -56,6 +67,34 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {    
     this.dataSource.sort = this.sort;
+    this.itemno.valueChanges.subscribe((itemnovalue) => {
+      this.filteredValues['itemno'] = itemnovalue;
+      this.dataSource.filter = JSON.stringify(this.filteredValues);
+      console.log(this.dataSource.filter);
+    });
+
+    //this.dataSource.filterPredicate = this.customFilterPredicate();
   }
  
+  // customFilterPredicate() {
+  //   const myFilterPredicate = (data: PeriodicElement, filter: string): boolean => {
+  //     var globalMatch = !this.globalFilter;
+
+  //     if (this.globalFilter) {
+  //       // search all text fields
+  //       globalMatch = data.name.toString().trim().toLowerCase().indexOf(this.globalFilter.toLowerCase()) !== -1;
+  //     }
+
+  //     if (!globalMatch) {
+  //       return;
+  //     }
+
+  //     let searchString = JSON.parse(filter);
+  //     return data.position.toString().trim().indexOf(searchString.position) !== -1 &&
+  //       data.name.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1;
+  //   }
+  //   return myFilterPredicate;
+  // }
 }
+
+
