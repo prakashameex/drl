@@ -1,61 +1,23 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import {MatTableDataSource,MatSort} from '@angular/material';
 import { FormControl } from '@angular/forms';
-export interface PeriodicElement {
-  itemdes: string;
-  Assortment:string;
-  position: string;
-  Campaign: string;
-  begindate:string;  
-  enddate: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: '#123', itemdes: 'Tacos',Assortment: 'sample1',Campaign: 'test2', begindate: 'Wed Oct 12 2014' ,enddate: 'Thu Nov 15 2018' },
-  {position: '#124', itemdes: 'Steak',Assortment: 'sample2',Campaign: 'test3', begindate: 'Thu Nov 15 2018' ,enddate: 'Wed Oct 16 2014' },
-  {position: '#125', itemdes: 'Pizza',Assortment: 'sample3',Campaign: 'test4', begindate: 'Wed Oct 14 2014' ,enddate: 'Wed Oct 17 2014' },
-  {position: '#123', itemdes: 'Pizza',Assortment: 'sample4',Campaign: 'test1', begindate: 'Wed Oct 15 2014' ,enddate: 'Wed Oct 18 2014' },
-  {position: '#125', itemdes: 'Pizza',Assortment: 'sample4', Campaign: 'test2', begindate: 'Wed Oct 16 2014' ,enddate: 'Wed Oct 19 2014' },
-  {position: '#124', itemdes: 'Carbon',Assortment: 'sample2', Campaign: 'test3', begindate: 'Wed Oct 17 2014' ,enddate: 'Wed Oct 20 2014' },
-  {position: '#123', itemdes: 'Nitrogen',Assortment: 'sample3', Campaign: 'test4', begindate: 'Wed Oct 13 2014' ,enddate: 'Wed Oct 21 2014' },
-  {position: '#121', itemdes: 'Pizza',Assortment: 'sample4', Campaign: 'test1', begindate: 'Wed Oct 18 2014' ,enddate: 'Wed Oct 22 2014' },
-  {position: '#122', itemdes: 'Fluorine',Assortment: 'sample3', Campaign: 'test2', begindate: 'Wed Oct 13 2014' ,enddate: 'Wed Oct 23 2014' },
-  {position: '#123', itemdes: 'Pizza',Assortment: 'sample2', Campaign: 'test3', begindate: 'Wed Oct 19 2014' ,enddate: 'Wed Oct 5 2014' },
-];
+//import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import {DrlService} from '../drl.service'
+import {PeriodicElement}  from '../in-memory.service'
 
 /*** @title Table with filtering
  */
 
 @Component({
-  selector: 'app-search',
+  selector: 'app-search',  
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnInit {
-  itemnumber = [
-    {value: '#123', viewValue: '#123'},
-    {value: '#124', viewValue: '#124'},
-    {value: '#125', viewValue: '#125'}
-  ];
-  foods = [
-    {value: 'steak', viewValue: 'Steak'},
-    {value: 'pizza', viewValue: 'Pizza'},
-    {value: 'tacos', viewValue: 'Tacos'}
-  ];
-  assortment = [
-    {value: 'sample1', viewValue: 'sample1'},
-    {value: 'sample2', viewValue: 'sample2'},
-    {value: 'sample3', viewValue: 'sample3'},
-    {value: 'sample4', viewValue: 'sample4'}
-  ];
-  campaign = [
-    {value: 'test1', viewValue: 'test1'},
-    {value: 'test2', viewValue: 'test2'},
-    {value: 'test3', viewValue: 'test3'},
-    {value: 'test4', viewValue: 'test4'}
-  ];
-  displayedColumns = ['position', 'itemdes','Assortment','Campaign', 'begindate','enddate'];
-    dataSource = new MatTableDataSource(ELEMENT_DATA);
+export class SearchComponent  {
+   displayedColumns = ['position', 'itemdes','Assortment','Campaign', 'begindate','enddate'];
+   originalPosts;
+   posts;
+   dataSource;
     itemno = new FormControl();
     itemdesc=new FormControl();
     Assortment=new FormControl();
@@ -63,81 +25,95 @@ export class SearchComponent implements OnInit {
     begin=new FormControl();
     end=new FormControl();    
   globalFilter = '';
+  //created empty object
     filteredValues = {
       itemno: '', itemdes: '', Assortment: '',Campaign: '',begin:'',  end: ''
     };
 
     @ViewChild(MatSort) sort: MatSort;
-  //   applyFilter(filterValue:string) {   
-  //     console.log('filer obj',filterValue)         
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
-  //   }
-  //   datefilter(filterValue) {   
-  //     console.log('date filer obj',filterValue.toDateString())      
-     
-  //   this.dataSource.filter = filterValue.toDateString().trim();
-  //   console.log(this.dataSource.filteredData[0]) 
-  // }
-  constructor() {
-    
-   }
-
-  ngOnInit() {    
+  datefilter(){ 
+    this.drl.getdata().subscribe(con=>{
+    this.dataSource= new MatTableDataSource(con);
     this.dataSource.sort = this.sort;
+    this.dataSource.filterPredicate = this.customFilterPredicate();
+  });     
+  }
+  constructor(private drl:DrlService) { 
+    this.drl.getdata().subscribe(con=>{      
+      this.originalPosts = con;
+      this.posts = this.originalPosts.slice(0,20);
+      this.dataSource= new MatTableDataSource(this.posts);   
+      this.dataSource.sort = this.sort;
+      this.dataSource.filterPredicate = this.customFilterPredicate();
+      // for(let key in this.dataSource.filteredData){
+      //   console.log(this.dataSource.filteredData[key].position);    
+     
+      // }
+// console.log(this.removeDuplicateUsingFilter(this.dataSource.filteredData.position));
+    });     
+       }
+//        removeDuplicateUsingFilter(arr){
+//   let unique_array =  arr.filter(function(elem, index, self) {
+//     index == self.indexOf(elem.position);
+    
+//    return index;
+// });
+// return unique_array;
+// }
+  ngOnInit() { 
+    // form input field value change
     this.itemno.valueChanges.subscribe((itemdescvalue) => {
+      console.log(itemdescvalue)
+      //once form input field values changed that value assiged fieldered value empty array this value will add every indivual element 
       this.filteredValues['itemno'] = itemdescvalue;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
-      console.log(this.dataSource.filter);
     });
-    this.itemdesc.valueChanges.subscribe((itemdescvalue) => {
+    this.itemdesc.valueChanges.subscribe((itemdescvalue) => {      
       this.filteredValues['itemdes'] = itemdescvalue;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
-      console.log(this.dataSource.filter);
     });
         this.Assortment.valueChanges.subscribe((itemdescvalue) => {
       this.filteredValues['Assortment'] = itemdescvalue;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
-      console.log(this.dataSource.filter);
     });
     this.Campaign.valueChanges.subscribe((itemdescvalue) => {
       this.filteredValues['Campaign'] = itemdescvalue;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
-      console.log(this.dataSource.filter);
     });
     this.begin.valueChanges.subscribe((itemdescvalue) => {     
       this.filteredValues['begin'] = itemdescvalue.toDateString();
-      console.log(this.filteredValues['begin']);
       this.dataSource.filter = JSON.stringify(this.filteredValues);
-      console.log(this.dataSource.filter);
     });
     this.end.valueChanges.subscribe((itemdescvalue) => {     
       this.filteredValues['end'] = itemdescvalue.toDateString();
-      console.log(this.filteredValues['end']);
+      //asign material current filter variable our current selected value
       this.dataSource.filter = JSON.stringify(this.filteredValues);
-      console.log(this.dataSource.filter);
     });
- this.dataSource.filterPredicate = this.customFilterPredicate();
   }
  
   customFilterPredicate() {
     const myFilterPredicate = (data: PeriodicElement, filter: string): boolean => {
-      console.log(data);
-      
-      var globalMatch = !this.globalFilter;
-
-      if (this.globalFilter) {
-        // search all text fields
-        globalMatch = data.itemdes.toString().trim().toLowerCase().indexOf(this.globalFilter.toLowerCase()) !== -1;
-      }
-
-      if (!globalMatch) {
-        return;
-      }
-
+   
+// mat filter element chk with data array element
       let searchString = JSON.parse(filter);
-      return  data.Assortment.toString().trim().toLowerCase().indexOf(searchString.Assortment.toLowerCase()) !== -1 && data.itemdes.toString().trim().toLowerCase().indexOf(searchString.itemdes.toLowerCase()) !== -1 && data.Campaign.toString().trim().toLowerCase().indexOf(searchString.Campaign.toLowerCase()) !== -1 && data.begindate.toString().trim().toLowerCase().indexOf(searchString.begin.toLowerCase()) !== -1 && data.position.toString().trim().toLowerCase().indexOf(searchString.itemno.toLowerCase()) !== -1 && data.enddate.toString().trim().toLowerCase().indexOf(searchString.end.toLowerCase()) !== -1;
+      return data.Assortment.toString().trim().toLowerCase().indexOf(searchString.Assortment.toLowerCase()) !== -1 && data.itemdes.toString().trim().toLowerCase().indexOf(searchString.itemdes.toLowerCase()) !== -1 && data.Campaign.toString().trim().toLowerCase().indexOf(searchString.Campaign.toLowerCase()) !== -1 && data.begindate.toString().trim().toLowerCase().indexOf(searchString.begin.toLowerCase()) !== -1 && data.position.toString().trim().toLowerCase().indexOf(searchString.itemno.toLowerCase()) !== -1 && data.enddate.toString().trim().toLowerCase().indexOf(searchString.end.toLowerCase()) !== -1;
     }
     return myFilterPredicate;
+  }
+  onScroll(){
+    console.log('scroll');
+    if(this.posts.length < this.originalPosts.length){  
+      let len = this.posts.length;
+      console.log(this.posts.length);
+      for(let i = len; i < len+20; i++){
+        if(i==this.originalPosts.length)
+        break;
+        this.posts.push(this.originalPosts[i]);
+      }
+      
+      this.dataSource= new MatTableDataSource(this.posts);  
+      console.log(this.posts);
+    }
   }
 }
 

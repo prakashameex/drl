@@ -1,4 +1,5 @@
-
+<!-- <p>{{dataSource?.filteredData[0].position}}</p> -->
+    <!-- <p [dataSource]="dataSource">{{element.position}}</p> -->
 <form #search="ngForm">
    
   <div class="col-sm-4">
@@ -6,8 +7,8 @@
     <mat-form-field class="col-sm-11">
       <mat-select  placeholder="ItemNumber" [formControl]="itemno">
 
-        <mat-option *ngFor="let itemnumber of itemnumber" [value]="itemnumber.value">
-          {{itemnumber.viewValue}}
+        <mat-option *ngFor="let itemnumber of dataSource?.filteredData" [value]="itemnumber.position">
+          {{itemnumber.position}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -18,8 +19,8 @@
     <mat-form-field class="col-sm-11">
       <mat-select placeholder="ItemDescription"  [formControl]="itemdesc">
 
-        <mat-option *ngFor="let food of foods" [value]="food.value">
-          {{food.viewValue}}
+        <mat-option *ngFor="let desc of dataSource?.filteredData" [value]="desc.itemdes">
+          {{desc.itemdes}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -30,8 +31,8 @@
     <mat-form-field class="col-sm-11">
       <mat-select  placeholder="Assortment" [formControl]="Assortment">
 
-        <mat-option *ngFor="let assortment of assortment" [value]="assortment.value">
-          {{assortment.viewValue}}
+        <mat-option *ngFor="let assortment of dataSource?.filteredData" [value]="assortment.Assortment">
+          {{assortment.Assortment}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -42,8 +43,8 @@
     <mat-form-field class="col-sm-11">
       <mat-select  placeholder="Campaign" [formControl]="Campaign">
 
-        <mat-option *ngFor="let campaign of campaign" [value]="campaign.value">
-          {{campaign.viewValue}}
+        <mat-option *ngFor="let campaign of dataSource?.filteredData" [value]="campaign.Campaign">
+          {{campaign.Campaign}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -73,7 +74,11 @@
       </i>Search</button>
   </div>
 </form>
-<div class="col-sm-12">
+<div class="search-results col-sm-12" infiniteScroll
+[infiniteScrollDistance]="2"
+[infiniteScrollThrottle]="50"
+(scrolled)="onScroll()"
+[scrollWindow]="false">
 
   <!-- material table -->
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 mattable">

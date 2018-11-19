@@ -26,3 +26,7 @@ table {
     color: #fff;
     opacity: 1 !important;
 }
+.search-results {
+    height: 400px;
+    overflow-y: scroll;
+  }
