@@ -1,5 +1,5 @@
 <!-- <p>{{dataSource?.filteredData[0].position}}</p> -->
-<!-- <p [dataSource]="dataSource">{{element.position}}</p> -->
+<!-- <p>{{con1?.position}}</p> -->
 <form #search="ngForm">
 
   <div class="col-sm-4">
@@ -7,7 +7,7 @@
     <mat-form-field class="col-sm-11">
       <mat-select placeholder="ItemNumber" [formControl]="itemno">
 
-        <mat-option *ngFor="let itemnumber of dataSource?.filteredData" [value]="itemnumber.position">
+        <mat-option *ngFor="let itemnumber of itemnumber" [value]="itemnumber.position">
           {{itemnumber.position}}
         </mat-option>
       </mat-select>
@@ -19,7 +19,7 @@
     <mat-form-field class="col-sm-11">
       <mat-select placeholder="ItemDescription" [formControl]="itemdesc">
 
-        <mat-option *ngFor="let desc of dataSource?.filteredData" [value]="desc.itemdes">
+        <mat-option *ngFor="let desc of description" [value]="desc.itemdes">
           {{desc.itemdes}}
         </mat-option>
       </mat-select>

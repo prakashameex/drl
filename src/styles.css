@@ -4,8 +4,11 @@
 app-search mat-form-field{
 width: 100%;
 }
-tr.mat-header-row,.mat-raised-button.search{
-    background: rgb(31, 127, 168);
+.mat-raised-button.search{
+    background: rgb(52, 170, 253);
+}
+tr.mat-header-row{
+    background: rgb(18, 123, 163);
 }
 tr.mat-header-row .mat-sort-header-button{
     color: #fff;
@@ -30,3 +33,17 @@ table {
     height: 400px;
     overflow-y: scroll;
   }
+  app-allocation .mat-form-field {
+    width: auto;
+}
+app-allocation .Assortment{
+    margin-top: 20px;
+}
+.nav {
+    margin: 30px 10px;
+    float: left;
+    width: calc(100% - 20px);
+}
+app-allocation .filter{
+    display:flex;
+}

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
-import { catchError, map } from 'rxjs/operators';
+import {  map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 const httpOptions = {
@@ -14,7 +14,7 @@ const httpOptions = {
 export class DrlService {
 
   constructor(private http:Http) {  }
-  getdata():Observable<any> {  
+  getdata() {  
     return this.http.get('api/ELEMENT_DATA').pipe(map(Response=>Response.json()));
 }
 }

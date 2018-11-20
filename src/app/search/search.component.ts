@@ -17,6 +17,8 @@ export class SearchComponent {
   displayedColumns = ['position', 'itemdes', 'Assortment', 'Campaign', 'begindate', 'enddate'];
   originalPosts;
   posts;
+  itemnumber=[];
+  description=[];
   dataSource;
   itemno = new FormControl();
   itemdesc = new FormControl();
@@ -40,7 +42,21 @@ export class SearchComponent {
   }
   constructor(private drl: DrlService) {
     this.drl.getdata().subscribe(con => {
-      console.log(con);
+      var obj = {};
+      var obj1={};
+      for (var i = 0, len = con.length; i < len; i++){
+        obj[con[i]['position']] = con[i];        
+      }
+     this.itemnumber = new Array();
+      for (var key in obj)
+        this.itemnumber.push(obj[key]);
+      console.log(this.itemnumber)
+      for (var i = 0, len = con.length; i < len; i++){
+        obj1[con[i]['description']] = con[i];        
+      }
+      for (var key in obj1)
+        this.description.push(obj1[key]);
+        console.log( this.description);       
       this.originalPosts = con;
       this.posts = this.originalPosts.slice(0, 20);
       this.dataSource = new MatTableDataSource(this.posts);
