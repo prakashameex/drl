@@ -10,7 +10,7 @@ tr.mat-header-row,.mat-raised-button.search{
 tr.mat-header-row .mat-sort-header-button{
     color: #fff;
 }
-.mattable{
+.search-results {
     margin-top: 30px;
 }
 /* Structure */

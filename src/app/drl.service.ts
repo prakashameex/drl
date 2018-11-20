@@ -15,6 +15,6 @@ export class DrlService {
 
   constructor(private http:Http) {  }
   getdata():Observable<any> {  
-    return this.http.get('api/ELEMENT_DATA').pipe(map(Response=>Response.json()))
+    return this.http.get('api/ELEMENT_DATA').pipe(map(Response=>Response.json()));
 }
 }
