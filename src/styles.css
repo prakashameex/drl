@@ -4,8 +4,15 @@
 app-search mat-form-field{
 width: 100%;
 }
-.mat-raised-button.search{
+.mat-raised-button.search{   
+background: rgb(238, 238, 238);
+border-radius: 0px;
+box-shadow: none;
+color: #333;
+}
+.mat-raised-button.search.campaign{
     background: rgb(52, 170, 253);
+    color: #fff;
 }
 tr.mat-header-row{
     background: rgb(18, 123, 163);
@@ -29,8 +36,8 @@ table {
     color: #fff;
     opacity: 1 !important;
 }
-.search-results {
-    height: 400px;
+.custom-search-results {
+    height: 200px;
     overflow-y: scroll;
   }
   app-allocation .mat-form-field {
@@ -46,4 +53,168 @@ app-allocation .Assortment{
 }
 app-allocation .filter{
     display:flex;
+}
+app-allocation .filter .material-icons {
+    width: 30px;
+    height: 25px;
+    background: #fff;
+    margin-left: 3px;
+    position: relative;
+    color: rgb(18, 123, 163);
+    padding: 3px 0px 0px 5px;
+    font-size: 21px;
+}
+app-allocation .filter .mat-sort-header-arrow {
+    color: rgba(0, 0, 0,0.7);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%) !important;
+    margin: 0;
+}
+body app-allocation .mat-header-cell {
+    color: #fff;
+    padding-top: 7px;
+    vertical-align: top;
+}
+.search-results tr.mat-row:nth-child(odd){
+background: rgb(245,245,245);
+}
+app-search .itemdesc .mat-select-arrow-wrapper{
+display: none;
+}
+/* header change */
+header {
+    background: rgb(18, 123, 163);
+    position: relative;
+    float: left;
+    width: 100%;
+}
+header .title{
+    width: 100%;
+    text-align: center;
+    color: #fff;    
+    font-size: 34px;
+}
+header .user{
+position: absolute;
+top: 50%;
+right: 20px;
+transform: translateY(-50%);
+color: #fff;
+font-size: 24px;
+text-transform: capitalize;
+}
+app-header ul.breadcrumb li{
+    float: left;
+    text-transform: capitalize;
+    color: rgb(18, 123, 163);
+    font-size: 15px;
+} 
+app-header .breadcrumb > li + li::before{
+content: "\f101";
+font: normal normal normal 14px/1 FontAwesome;
+color: rgb(18, 123, 163);
+}
+.custom-search-results th {
+
+    background: rgb(18, 123, 163);
+    color: #fff;
+    padding: 20px 0px;
+
+}
+.custom-search-results td{
+text-transform: capitalize;
+}
+.custom-search-results th .mat-sort-header-container{
+justify-content: center;
+}
+.custom-search-results td{
+    padding: 10px;
+    text-align: center;
+    text-transform: capitalize;
+}
+.custom-search-results tr:nth-child(odd){    
+background: rgb(245,245,245);
+}
+.drop {
+    width: 15px;
+    margin-left: 7px;    
+    height: 12px;
+}
+.drop .dropdown,.drop .dropup{
+    height:7px;
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+}
+app-search .mat-sort-header-arrow {
+    display: none;
+}
+app-search .custom-search-results table{
+border-color: rgba(128, 128, 128, 0.5);
+}
+.custom-search-results .table-header th{
+    top: 0px;
+    position: sticky;
+    z-index: 100;
+}
+header.drl-header ul{
+    padding-left:0px;    
+}
+header.drl-header li {
+    float: left;
+    list-style: none;
+    color: #fff;
+    padding: 15px;
+}
+header.drl-header li.field-promo{
+    background-color:rgb(128, 130, 133);;
+    margin-right:20px;
+    position: relative;
+}
+header.drl-header li.field-promo:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-top: 25px solid transparent;
+    border-bottom: 25px solid transparent;
+    border-left: 25px solid rgb(128, 130, 133);
+    position: absolute;
+    right: -24px;
+    top: 0px;
+}
+header.drl-header li .fa-home{
+    margin-right: 5px;
+}
+header.drl-header .user{
+font-size: 14px;
+}
+header.drl-header .user i{
+    margin-right: 7px;
+}
+.breadcrumb{
+width: 100%;
+float: left;
+background: transparent;
+border-bottom: 1px solid rgba(128, 128, 128, 0.22);
+}
+.search-form{
+    width: 100%;
+    float: left;
+    margin-top: 20px;
+}
+.new-campaign{
+    float: right;
+}
+.selectize-dropdown{
+    top:36px !important;
+}
+app-search .mat-select-value{
+    max-width: none;
+}
+body .cdk-overlay-pane-select-search {
+    margin-top: -20px;
+    max-width: 340px;
+    width: 100%;
 }

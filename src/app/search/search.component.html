@@ -1,38 +1,59 @@
-<!-- <p>{{dataSource?.filteredData[0].position}}</p> -->
-<!-- <p>{{con1?.position}}</p> -->
-<form #search="ngForm">
+<!-- <p>{{dataSource?.filteredData[0].itemNumber}}</p> -->
+<!-- <p  *ngFor="let itemnumber of item_detail">{{ itemnumber.itemNumber}}</p> -->
+
+<!-- 
+<select multiple>
+  <option value="0">Zero</option>
+  <option value="1">One</option>
+  <option value="2">Two</option>
+  <option value="3">Three</option>
+  <option value="4">Four</option>
+</select> -->
+
+<p>{{value}}</p>
+<app-header></app-header>
+<div class="col-sm-2 new-campaign">
+    <button class="campaign search" mat-raised-button color="primary" (click)="datefilter()"> <i class="fa fa-plus"></i> New
+      Campaign
+    </button>
+  </div>
+<form #search="ngForm" class="search-form">
 
   <div class="col-sm-4">
-    <h5 class="col-sm-11">item Number</h5>
-    <mat-form-field class="col-sm-11">
+    <h5 class="col-sm-11">Item Number</h5>
+    <!-- <mat-form-field class="col-sm-11">
       <mat-select placeholder="ItemNumber" [formControl]="itemno">
 
-        <mat-option *ngFor="let itemnumber of itemnumber" [value]="itemnumber.position">
-          {{itemnumber.position}}
+        <mat-option *ngFor="let itemnumber of item_detail" [value]="itemnumber.itemNumber">
+          {{itemnumber.itemNumber}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+    <mat-form-field class="col-sm-11" >
+      <mat-select class="itemdesc" placeholder="Item Number" [formControl]="itemno" #singleSelect>
+        <ngx-mat-select-search [formControl]="itemnoFilterCtrl" [placeholderLabel]="itemNumberPlaceholder"></ngx-mat-select-search>
+        <mat-option *ngFor="let desc of filteredBanks | async" [value]="desc.id">
+          {{desc.id}}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <div class="col-sm-4">
-    <h5 class="col-sm-11">item Description</h5>
-
+    <h5 class="col-sm-11">Item Description</h5>
     <mat-form-field class="col-sm-11">
-      <mat-select placeholder="ItemDescription" [formControl]="itemdesc">
-
-        <mat-option *ngFor="let desc of description" [value]="desc.itemdes">
-          {{desc.itemdes}}
-        </mat-option>
-      </mat-select>
+        <input matInput placeholder="Input" [formControl]="itemdesc" [readonly]="isItemDescReadOnly">
+      <!-- <input matInput type="text" [formControl]="itemno" class="itemno"> -->
     </mat-form-field>
+   
   </div>
   <div class="col-sm-4">
     <h5 class="col-sm-11">Assortment</h5>
 
     <mat-form-field class="col-sm-11">
-      <mat-select placeholder="Assortment" [formControl]="Assortment">
-
-        <mat-option *ngFor="let assortment of dataSource?.filteredData" [value]="assortment.Assortment">
-          {{assortment.Assortment}}
+      <mat-select placeholder="Assortment" [formControl]="Assortment"  #singleSelect>
+        <ngx-mat-select-search [formControl]="AssortmentCtrl" [placeholderLabel]="assortmentPlaceholder"></ngx-mat-select-search>
+        <mat-option *ngFor="let assortment of assortfilter | async" [value]="assortment.description">
+          {{assortment.description}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -41,10 +62,10 @@
     <h5 class="col-sm-11">Campaign</h5>
 
     <mat-form-field class="col-sm-11">
-      <mat-select placeholder="Campaign" [formControl]="Campaign">
-
-        <mat-option *ngFor="let campaign of dataSource?.filteredData" [value]="campaign.Campaign">
-          {{campaign.Campaign}}
+      <mat-select placeholder="Campaign" [formControl]="Campaign" #singleSelect>
+        <ngx-mat-select-search [formControl]="CampaignCtrl"  [placeholderLabel]="campaignPlaceholder"></ngx-mat-select-search>
+        <mat-option *ngFor="let campaign of camp_filter | async" [value]="campaign.description">
+          {{campaign.description}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -53,7 +74,7 @@
     <div class="col-sm-6">
       <h5>Campaign Begin Date</h5>
       <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Choose Begin date" [formControl]="begin">
+        <input matInput [matDatepicker]="picker" placeholder="Campaign Begin Date" [formControl]="begin">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
@@ -61,7 +82,7 @@
     <div class="col-sm-6">
       <h5>Campaign End Date</h5>
       <mat-form-field>
-        <input matInput [matDatepicker]="pickerto" placeholder="Choose End date" [formControl]="end">
+        <input matInput [matDatepicker]="pickerto" placeholder="Campaign End Date" [formControl]="end">
         <mat-datepicker-toggle matSuffix [for]="pickerto"></mat-datepicker-toggle>
         <mat-datepicker #pickerto></mat-datepicker>
       </mat-form-field>
@@ -69,54 +90,81 @@
 
   </div>
   <div class="col-sm-12">
-    <button class="search" mat-raised-button color="primary" (click)="datefilter(search.value)"><i class="material-icons">
-        search
-      </i>Search</button>
+    <div class="col-sm-2">
+      <button class="search" mat-raised-button color="primary" (click)="datefilter()"><i class="material-icons">
+          search
+        </i>Search</button>
+    </div>
+  
+    <!-- <div class="col-sm-2">        
+        <button class="campaign search" mat-raised-button color="primary" (click)="search.reset()"> cancel
+          </button>
+      </div> -->
   </div>
 </form>
-<div class="search-results col-sm-12" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
-  (scrolled)="onScroll()" [scrollWindow]="false">
+<div class="custom-search-results search-results col-sm-12" infiniteScroll [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50" (scrolled)="onScroll()" [scrollWindow]="false">
 
   <!-- material table -->
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 mattable">
+  <table matSort (matSortChange)="sortData($event)" border >
+    <tr class="table-header">
+      <th mat-sort-header="itemNumber">Item Number
+        <div class="drop">
+        <span class="dropup">
+          <span class="caret"></span>
+        </span>
+        <span class="dropdown">
+          <span class="caret"></span>
+        </span></div></th>
+      <th mat-sort-header="itemDescription">Item Description<div class="drop">
+          <span class="dropup">
+            <span class="caret"></span>
+          </span>
+          <span class="dropdown">
+            <span class="caret"></span>
+          </span></div></th>
+      <th mat-sort-header="assortment">Assortment<div class="drop">
+          <span class="dropup">
+            <span class="caret"></span>
+          </span>
+          <span class="dropdown">
+            <span class="caret"></span>
+          </span></div></th>
+      <th mat-sort-header="campaign">Campaign<div class="drop">
+          <span class="dropup">
+            <span class="caret"></span>
+          </span>
+          <span class="dropdown">
+            <span class="caret"></span>
+          </span></div></th>
+      <th mat-sort-header="campainBeginDate">Campaign Begin Date<div class="drop">
+          <span class="dropup">
+            <span class="caret"></span>
+          </span>
+          <span class="dropdown">
+            <span class="caret"></span>
+          </span></div></th>
+      <th mat-sort-header="campainEndDate">Campaign End Date<div class="drop">
+          <span class="dropup">
+            <span class="caret"></span>
+          </span>
+          <span class="dropdown">
+            <span class="caret"></span>
+          </span></div></th>
+    </tr>
+    <tr *ngFor="let campaign of questionscard">
+      <td>{{campaign.itemNumber}}</td>
+      <td>{{campaign.itemDescription}}</td>
+      <td>{{campaign.assortment}}</td>
+      <td>{{campaign.campaign}}</td>
+      <td>{{campaign.campainBeginDate}}</td>
+      <td>{{campaign.campainEndDate}}</td>
+    </tr>
 
-    <!-- Position Column -->
-    <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Number</th>
-      <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-    </ng-container>
-
-    <!-- Description Column -->
-    <ng-container matColumnDef="itemdes">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Description </th>
-      <td mat-cell *matCellDef="let element"> {{element.itemdes}} </td>
-    </ng-container>
-
-    <!-- Weight Column -->
-    <ng-container matColumnDef="Assortment">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Assortment </th>
-      <td mat-cell *matCellDef="let element"> {{element.Assortment}} </td>
-    </ng-container>
-
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="Campaign">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Campaign </th>
-      <td mat-cell *matCellDef="let element"> {{element.Campaign}} </td>
-    </ng-container>
-
-    <!-- Campaign Begin Date -->
-    <ng-container matColumnDef="begindate">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Campaign Begin Date </th>
-      <td mat-cell *matCellDef="let element"> {{element.begindate}} </td>
-    </ng-container>
-
-    <!-- Campaign End Date -->
-    <ng-container matColumnDef="enddate">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Campaign End Date </th>
-      <td mat-cell *matCellDef="let element"> {{element.enddate}} </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+</div>
+<div class="col-sm-12">
 
+	<!-- <ng-selectize [config]="singleSelectConfig" [options]="singleSelectOptions?.assortmentDescription" [placeholder]="placeholder"
+				   [(ngModel)]="singleSelectValue" ngDefaultControl></ng-selectize> -->
 </div>
